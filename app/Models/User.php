@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -22,7 +24,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'team_id',
     ];
+
+    protected $softDeletes = true;
 
     /**
      * The attributes that should be hidden for serialization.
@@ -46,4 +51,32 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
+    }
+
+    public function scheduleAuthors(): HasMany
+    {
+        return $this->hasMany(Schedule::class, 'author_id');
+    }
+
+    public function schedulePMs(): HasMany
+    {
+        return $this->hasMany(Schedule::class, 'pm_id');
+    }
+
+    public function scheduleParticipants(): HasMany
+    {
+        return $this->hasMany(ScheduleParticipant::class, 'user_id');
+    }
+
+    public function scheduleComments(): HasMany
+    {
+        return $this->hasMany(ScheduleComment::class, 'author_id');
+    }
+    
+
+    
 }
