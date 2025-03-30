@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departments', function (Blueprint $table) {
+        Schema::create('schedule_comments', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->integer('schedule_id');
+            $table->string('comment');
+            $table->integer('author_id');
             $table->timestamps();
             $table->softDeletes('deleted_at', precision: 0);
         });
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('departments');
+        Schema::dropIfExists('schedule_comments');
     }
 };
