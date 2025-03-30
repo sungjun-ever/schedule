@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-class ScheduleParticipant extends Model
+class ScheduleParticipant extends BaseModel
 {
     protected $fillable = [
         'schedule_id',

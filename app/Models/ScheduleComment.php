@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ScheduleComment extends Model
+class ScheduleComment extends BaseModel
 {
     protected $fillable = [
         'schedule_id',
