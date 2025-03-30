@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-class ScheduleStatus extends Model
+class ScheduleStatus extends BaseModel
 {
     protected $fillable = [
         'status_name',

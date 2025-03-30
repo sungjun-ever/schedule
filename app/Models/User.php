@@ -76,7 +76,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(ScheduleComment::class, 'author_id');
     }
-    
 
+    public function toArray(): array
+    {
+        $attributes = parent::toArray();
+        $camelCaseAttributes = [];
+
+        foreach ($attributes as $key => $value) {
+            $camelCaseAttributes[Str::camel($key)] = $value;
+        }
+
+        return $camelCaseAttributes;
+    }
     
 }
