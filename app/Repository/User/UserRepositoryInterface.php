@@ -2,9 +2,9 @@
 
 namespace App\Repository\User;
 
-use App\Repository\RepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 
-interface UserRepositoryInterface extends RepositoryInterface
+interface UserRepositoryInterface
 {
-
+    public function findMemberByTeam(int $id): ?Collection;
 }
