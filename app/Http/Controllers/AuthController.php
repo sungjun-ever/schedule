@@ -26,7 +26,7 @@ class AuthController extends Controller
 
         if (!$user || !Hash::check($request->post('password'), $user->password)) {
             return response()->json([
-                'message' => '유효하지 않은 인증 정보'
+                'message' => '아이디 또는 비밀번호가 일치하지 않습니다.'
             ], 401);
         }
 

@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('password');
-            $table->integer('team_id');
+            $table->string('level');
+            $table->integer('team_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes('deleted_at', precision: 0);

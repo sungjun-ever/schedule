@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\DTOs\User\UpdateUserDto;
 use App\DTOs\User\StoreUserDto;
+use App\Exceptions\UserNotFoundException;
 use App\Models\User;
 use App\Repository\User\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
@@ -34,7 +35,7 @@ class UserService
 
     public function getAllUsers(): Collection
     {
-        return $this->userRepository->findAll();
+        return $this->userRepository->getAll();
     }
 
     /**
@@ -43,17 +44,31 @@ class UserService
      */
     public function storeUser(StoreUserDto $userDto): User
     {
-        return $this->userRepository->create($userDto);
+        return $this->userRepository->create([
+            'name' => $userDto->name,
+            'email' => $userDto->email,
+            'password' => $userDto->password,
+            'team_id' => $userDto->teamId
+        ]);
     }
 
     /**
      * @param int $id
      * @param UpdateUserDto $userDto
      * @return void
+     * @throws UserNotFoundException
      */
     public function updateUser(int $id, UpdateUserDto $userDto): void
     {
-        $this->userRepository->update($id, $userDto);
+        $data = [];
+
+        foreach ($userDto as $field => $value) {
+            if (!empty($value)) {
+                $data[$field] = $value;
+            }
+        }
+
+        $this->userRepository->update($id, $data);
     }
 
     /**

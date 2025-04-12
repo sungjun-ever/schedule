@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Form from '../components/Form';
 
-const UserCreate = () => {
+const UserEdit = () => {
     const navigate = useNavigate();
+    const { id } = useParams();
     const [formData, setFormData] = useState({
-        username: '',
+        name: '',
         email: '',
         password: '',
         passwordConfirmation: '',
@@ -15,24 +16,45 @@ const UserCreate = () => {
     });
     const [teams, setTeams] = useState([]);
     const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchTeams = async () => {
+        const fetchData = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('/api/teams', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                const [userResponse, teamsResponse] = await Promise.all([
+                    axios.get(`/api/users/${id}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    }),
+                    axios.get('/api/teams', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    })
+                ]);
+
+                const userData = userResponse.data.data;
+                setFormData({
+                    name: userData.name || '',
+                    email: userData.email || '',
+                    password: '',
+                    passwordConfirmation: '',
+                    level: userData.level || '',
+                    teamId: userData.team_id || ''
                 });
-                setTeams(response.data.data || []);
+                setTeams(teamsResponse.data.data || []);
+                setLoading(false);
             } catch (error) {
-                console.error('팀 목록을 불러오는데 실패했습니다:', error);
+                console.error('데이터를 불러오는데 실패했습니다:', error);
+                setErrors({ fetch: '데이터를 불러오는데 실패했습니다.' });
+                setLoading(false);
             }
         };
 
-        fetchTeams();
-    }, []);
+        fetchData();
+    }, [id]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -48,7 +70,7 @@ const UserCreate = () => {
 
         try {
             const token = localStorage.getItem('token');
-            await axios.post('/api/users', formData, {
+            await axios.put(`/api/users/${id}`, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -58,7 +80,7 @@ const UserCreate = () => {
             if (error.response?.data?.errors) {
                 setErrors(error.response.data.errors);
             } else {
-                setErrors({ submit: '회원 생성에 실패했습니다.' });
+                setErrors({ submit: '회원 정보 수정에 실패했습니다.' });
             }
         }
     };
@@ -82,15 +104,17 @@ const UserCreate = () => {
         },
         {
             name: 'password',
-            label: '비밀번호',
+            label: '새 비밀번호',
             type: 'password',
-            onChange: handleChange
+            onChange: handleChange,
+            placeholder: '변경할 경우에만 입력하세요'
         },
         {
             name: 'passwordConfirmation',
-            label: '비밀번호 확인',
+            label: '새 비밀번호 확인',
             type: 'password',
-            onChange: handleChange
+            onChange: handleChange,
+            placeholder: '변경할 경우에만 입력하세요'
         },
         {
             name: 'level',
@@ -114,16 +138,25 @@ const UserCreate = () => {
         }
     ];
 
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+            </div>
+        );
+    }
+
     return (
         <Form
-            title="회원 생성"
+            title="회원 정보 수정"
             fields={fields}
             onSubmit={handleSubmit}
             onCancel={handleCancel}
             initialData={formData}
             errors={errors}
+            submitButtonText="수정"
         />
     );
 };
 
-export default UserCreate; 
+export default UserEdit; 

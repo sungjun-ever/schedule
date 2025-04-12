@@ -57,6 +57,7 @@ const UserList = () => {
             columns={columns}
             createPath="/users/create"
             editPathPrefix="/users"
+            detailPathPrefix="/users"
             onDelete={handleDelete}
             isLoading={loading}
             error={error}

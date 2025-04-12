@@ -19,12 +19,12 @@ abstract class BaseRepository implements RepositoryInterface
         return $this->model->all();
     }
 
-    public function create(DtoInterface $data)
+    public function create(array $data)
     {
         $this->model->create($data);
     }
 
-    public function update(int $id, DtoInterface $data)
+    public function update(int $id, array $data)
     {
         $this->model->find($id)->update($data);
     }

@@ -33,7 +33,7 @@ const Login = () => {
 
                 navigate('/');
             } else {
-                setError(data.message || '로그인에 실패했습니다.');
+                setError('아이디 또는 비밀번호를 확인해주세요.');
             }
         } catch (error) {
             setError('서버 오류가 발생했습니다.');

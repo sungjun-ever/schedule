@@ -8,6 +8,7 @@ Route::middleware('auth:sanctum')->get('/auth/status', function () {
     return response()->json(['authenticated' => true], 200);
 });
 
+Route::get('/test/user', [UserController::class, 'testUser']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])
@@ -22,4 +23,4 @@ Route::prefix('/users')->group(function () {
     Route::get('/{userid}', [UserController::class, 'show']);
     Route::put('/{userid}', [UserController::class, 'update']);
     Route::delete('/{userid}', [UserController::class, 'destroy']);
-});
+})->middleware('auth:sanctum');

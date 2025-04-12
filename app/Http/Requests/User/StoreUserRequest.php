@@ -2,17 +2,19 @@
 
 namespace App\Http\Requests\User;
 
+use App\Enum\User\UserLevel;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-//    public function authorize(): bool
-//    {
-//        return true;
-//    }
+    public function authorize(): bool
+    {
+        return true;
+    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -24,8 +26,9 @@ class StoreUserRequest extends FormRequest
         return [
             'name' => 'required|string|max:50',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'passwordConfirmation' => 'required|string|min:8',
+            'password' => 'required|string|min:6',
+            'passwordConfirmation' => 'required|string|min:6|same:password',
+            'level' => ['nullable', Rule::enum(UserLevel::class)],
             'teamId' => 'nullable|numeric|exists:teams,id',
         ];
     }
@@ -47,12 +50,16 @@ class StoreUserRequest extends FormRequest
             'password' => [
                 'required' => '비밀번호는 필수값입니다.',
                 'min' => '비밀번호는 최소 8자리입니다.',
-                'confirmed' => '비밀번호 확인과 일치하지 않습니다.',
             ],
 
             'passwordConfirmation' => [
                 'required' => '비밀번호 확인은 필수값입니다.',
                 'min' => '비밀번호는 최소 8자리입니다.',
+                'same' => '비밀번호와 일치하지 않습니다.'
+            ],
+
+            'level' => [
+                'enum' => '올바른 사용자 레벨을 선택해주세요.'
             ],
 
             'teamId' => [

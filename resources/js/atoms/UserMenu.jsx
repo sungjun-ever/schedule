@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const UserMenu = ({ user }) => {
+const UserMenu = ({ user: propUser }) => {
     const navigate = useNavigate();
+    const [user, setUser] = useState(propUser);
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+    }, []);
 
     const handleLogout = async () => {
         try {
@@ -21,10 +29,19 @@ const UserMenu = ({ user }) => {
         }
     };
 
+    const handleUserClick = () => {
+        if (user?.id) {
+            navigate(`/users/${user.id}/edit`);
+        }
+    };
+
     return (
         <div className="flex items-center space-x-4">
             <div className="flex items-center">
-                <span className="text-sm font-medium text-gray-700">
+                <span 
+                    onClick={handleUserClick}
+                    className="text-sm font-medium text-gray-700 cursor-pointer hover:text-gray-900"
+                >
                     {user?.name || 'Guest'} 님
                 </span>
             </div>

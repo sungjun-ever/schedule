@@ -19,24 +19,22 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $this->model = $model;
     }
 
-    /**
-     * 사용자 등록
-     * @param StoreUserDto $data
-     * @return User
-     */
-    public function create(DtoInterface $data): User
+    public function getAll(): Collection
     {
-        $user = new User();
-        $user->name = $data->name;
-        $user->email = $data->email;
-        $user->password = $data->password;
-        $user->team_id = $data->teamId ?: null;
-        $user->save();
-
-        return $user;
+        return $this->model->orderBy('id', 'desc')->get();
     }
 
-    public function update(int $id, DtoInterface $data): void
+    /**
+     * 사용자 등록
+     * @param array $data
+     * @return User
+     */
+    public function create(array $data): User
+    {
+        return $this->model->create($data);
+    }
+
+    public function update(int $id, array $data): void
     {
         $user = $this->model->find($id);
 
@@ -52,7 +50,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      * @param int $id
      * @return Collection|null
      */
-    public function findMemberByTeam(int $id): ?Collection
+    public function getMemberByTeam(int $id): ?Collection
     {
         return $this->model->where('team_id', $id)->get();
     }

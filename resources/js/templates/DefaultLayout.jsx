@@ -8,6 +8,8 @@ import Header from '../organisms/Header';
 import UserList from '../pages/UserList';
 import TeamList from '../pages/TeamList';
 import UserCreate from '../pages/UserCreate';
+import UserDetail from '../pages/UserDetail';
+import UserEdit from '../pages/UserEdit';
 import axios from 'axios';
 
 const AppContent = () => {
@@ -86,11 +88,31 @@ const AppContent = () => {
                     } 
                 />
                 <Route 
+                    path="/users/:id" 
+                    element={
+                        isAuthenticated ? 
+                        <MainLayout>
+                            <UserDetail />
+                        </MainLayout> : 
+                        <Navigate to="/login" />
+                    } 
+                />
+                <Route 
                     path="/users/create" 
                     element={
                         isAuthenticated ? 
                         <MainLayout>
                             <UserCreate />
+                        </MainLayout> : 
+                        <Navigate to="/login" />
+                    } 
+                />
+                <Route 
+                    path="/users/:id/edit" 
+                    element={
+                        isAuthenticated ? 
+                        <MainLayout>
+                            <UserEdit />
                         </MainLayout> : 
                         <Navigate to="/login" />
                     } 

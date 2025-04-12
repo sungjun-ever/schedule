@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const DataList = ({ 
     title, 
@@ -8,9 +8,12 @@ const DataList = ({
     createPath, 
     onDelete, 
     editPathPrefix = '',
+    detailPathPrefix = '',
     isLoading = false,
     error = null
 }) => {
+    const navigate = useNavigate();
+
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-64">
@@ -59,7 +62,11 @@ const DataList = ({
                     <tbody className="bg-white divide-y divide-gray-200">
                         {data && data.length > 0 ? (
                             data.map((item) => (
-                                <tr key={item.id}>
+                                <tr 
+                                    key={item.id}
+                                    className="hover:bg-gray-50 cursor-pointer"
+                                    onClick={() => navigate(`${detailPathPrefix}/${item.id}`)}
+                                >
                                     {columns.map((column) => (
                                         <td 
                                             key={column.key}
@@ -68,7 +75,10 @@ const DataList = ({
                                             {item[column.key]}
                                         </td>
                                     ))}
-                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <td 
+                                        className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
                                         <Link
                                             to={`${editPathPrefix}/${item.id}/edit`}
                                             className="text-indigo-600 hover:text-indigo-900 mr-4"

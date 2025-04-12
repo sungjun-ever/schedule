@@ -7,7 +7,8 @@ const Form = ({
     onCancel, 
     cancelPath,
     initialData = {},
-    errors = {}
+    errors = {},
+    submitButtonText = '생성'
 }) => {
     return (
         <div className="container mx-auto px-4 py-8">
@@ -43,6 +44,7 @@ const Form = ({
                                         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md bg-white py-2 px-3"
                                         value={initialData[field.name] || ''}
                                         onChange={field.onChange}
+                                        placeholder={field.placeholder}
                                     />
                                 )}
                             </div>
@@ -63,7 +65,7 @@ const Form = ({
                             type="submit"
                             className="bg-indigo-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
-                            생성
+                            {submitButtonText}
                         </button>
                     </div>
                 </form>

@@ -23,6 +23,15 @@ class UserController extends Controller
     {
     }
 
+    public function testUser():void
+    {
+        $this->userService->storeUser(new StoreUserDto(
+            name: "TEST",
+            email: "test@test.com",
+            password: '123456'
+        ));
+    }
+
     public function my(): JsonResponse
     {
         return response()->json([
@@ -39,32 +48,23 @@ class UserController extends Controller
         ]);
     }
 
-    public function show(Request $request): JsonResponse
+    public function show(int $userId): JsonResponse
     {
-        $validated = Validator::make($request->all(), [
-            'id' => 'required|integer',
-        ]);
-
-        if ($validated->fails()) {
-            throw new ValidationException($validated);
-        }
-
         return response()->json([
             'message' => 'success',
-            'data' => $this->userService->getUserById($validated['id'])
+            'data' => $this->userService->getUserById($userId)
         ]);
     }
 
     public function store(StoreUserRequest $request): JsonResponse
     {
-        $userDto = new StoreUserDto(
+        $this->userService->storeUser(new StoreUserDto(
             name: $request->post('name'),
             email: $request->post('email'),
             password: $request->post('password'),
-            teamId: $request->post('teamId')
-        );
-
-        $this->userService->storeUser($userDto);
+            level: $request->post('level'),
+            teamId: $request->post('teamId') ?: null
+        ));
 
         return response()->json([
             'message' => 'success',
@@ -73,10 +73,15 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request): JsonResponse
     {
+        $password = $request->post('password') && $request->post('passwordConfirmation') ?
+            $request->post('password') : null;
+
         $userDto = new UpdateUserDto(
             name: $request->post('name'),
             email: $request->post('email'),
-            teamId: $request->post('teamId') ?? null,
+            password: $password,
+            level: $request->post('level'),
+            teamId: $request->post('teamId'),
         );
 
         $this->userService->updateUser($request->post('id'), $userDto);
