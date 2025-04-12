@@ -2,7 +2,9 @@
 
 namespace App\Repository\User;
 
-use App\DTO\DtoInterface;
+use App\DTOs\DtoInterface;
+use App\DTOs\User\StoreUserDto;
+use App\Exceptions\UserNotFoundException;
 use App\Models\User;
 use App\Repository\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
@@ -19,7 +21,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
     /**
      * 사용자 등록
-     * @param DtoInterface $data
+     * @param StoreUserDto $data
      * @return User
      */
     public function create(DtoInterface $data): User
@@ -36,14 +38,13 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
     public function update(int $id, DtoInterface $data): void
     {
-        $user = new User();
-        $user->name = $data->name;
-        $user->email = $data->email;
-        $user->team_id = $data->teamId ?: null;
+        $user = $this->model->find($id);
 
-        if ($user->isDirty()) {
-            $user->save();
+        if (!$user) {
+            throw new UserNotFoundException();
         }
+
+        $user->update($data);
     }
 
     /**

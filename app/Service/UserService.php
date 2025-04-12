@@ -2,10 +2,11 @@
 
 namespace App\Service;
 
-use App\DTO\DtoInterface;
-use App\DTO\User\StoreUserDto;
+use App\DTOs\User\UpdateUserDto;
+use App\DTOs\User\StoreUserDto;
 use App\Models\User;
 use App\Repository\User\UserRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserService
@@ -31,21 +32,26 @@ class UserService
         return $user;
     }
 
+    public function getAllUsers(): Collection
+    {
+        return $this->userRepository->findAll();
+    }
+
     /**
-     * @param DtoInterface $userDto
+     * @param StoreUserDto $userDto
      * @return User
      */
-    public function storeUser(DtoInterface $userDto): User
+    public function storeUser(StoreUserDto $userDto): User
     {
         return $this->userRepository->create($userDto);
     }
 
     /**
      * @param int $id
-     * @param DtoInterface $userDto
+     * @param UpdateUserDto $userDto
      * @return void
      */
-    public function updateUser(int $id, DtoInterface $userDto): void
+    public function updateUser(int $id, UpdateUserDto $userDto): void
     {
         $this->userRepository->update($id, $userDto);
     }

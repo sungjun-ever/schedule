@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DTO\User;
+namespace App\DTOs\User;
 
-use App\DTO\DtoInterface;
+use App\DTOs\DtoInterface;
 
 readonly class UpdateUserDto implements DtoInterface
 {

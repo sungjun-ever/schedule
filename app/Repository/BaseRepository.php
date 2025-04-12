@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\DTO\DtoInterface;
+use App\DTOs\DtoInterface;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseRepository implements RepositoryInterface
