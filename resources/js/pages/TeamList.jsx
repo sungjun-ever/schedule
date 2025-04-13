@@ -46,9 +46,9 @@ const TeamList = () => {
     };
 
     const columns = [
-        { key: 'name', label: '팀 이름' },
+        { key: 'teamName', label: '팀 이름' },
         { key: 'description', label: '설명' },
-        { key: 'member_count', label: '멤버 수' }
+        { key: 'usersCount', label: '멤버 수' }
     ];
 
     return (
@@ -58,6 +58,7 @@ const TeamList = () => {
             columns={columns}
             createPath="/teams/create"
             editPathPrefix="/teams"
+            detailPathPrefix="/teams"
             onDelete={handleDelete}
             isLoading={loading}
             error={error}

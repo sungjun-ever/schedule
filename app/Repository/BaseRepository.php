@@ -21,7 +21,7 @@ abstract class BaseRepository implements RepositoryInterface
 
     public function create(array $data)
     {
-        $this->model->create($data);
+        return $this->model->create($data);
     }
 
     public function update(int $id, array $data)
@@ -31,6 +31,6 @@ abstract class BaseRepository implements RepositoryInterface
 
     public function delete(int $id)
     {
-        $this->model->find($id)->softDeletes();
+        $this->model->find($id)->delete();
     }
 }

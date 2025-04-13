@@ -7,6 +7,9 @@ import Login from '../pages/Login';
 import Header from '../organisms/Header';
 import UserList from '../pages/UserList';
 import TeamList from '../pages/TeamList';
+import TeamCreate from '../pages/TeamCreate';
+import TeamEdit from '../pages/TeamEdit';
+import TeamDetail from '../pages/TeamDetail';
 import UserCreate from '../pages/UserCreate';
 import UserDetail from '../pages/UserDetail';
 import UserEdit from '../pages/UserEdit';
@@ -123,6 +126,36 @@ const AppContent = () => {
                         isAuthenticated ? 
                         <MainLayout>
                             <TeamList />
+                        </MainLayout> : 
+                        <Navigate to="/login" />
+                    } 
+                />
+                <Route 
+                    path="/teams/:id" 
+                    element={
+                        isAuthenticated ? 
+                        <MainLayout>
+                            <TeamDetail />
+                        </MainLayout> : 
+                        <Navigate to="/login" />
+                    } 
+                />
+                <Route 
+                    path="/teams/create" 
+                    element={
+                        isAuthenticated ? 
+                        <MainLayout>
+                            <TeamCreate />
+                        </MainLayout> : 
+                        <Navigate to="/login" />
+                    } 
+                />
+                <Route 
+                    path="/teams/:id/edit" 
+                    element={
+                        isAuthenticated ? 
+                        <MainLayout>
+                            <TeamEdit />
                         </MainLayout> : 
                         <Navigate to="/login" />
                     } 

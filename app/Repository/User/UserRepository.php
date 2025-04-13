@@ -2,8 +2,6 @@
 
 namespace App\Repository\User;
 
-use App\DTOs\DtoInterface;
-use App\DTOs\User\StoreUserDto;
 use App\Exceptions\UserNotFoundException;
 use App\Models\User;
 use App\Repository\BaseRepository;
@@ -19,9 +17,24 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $this->model = $model;
     }
 
+    public function find(int $id): User
+    {
+        return $this->model->with([
+            'team' => function ($query) {
+                $query->select(['id', 'team_name']);
+            }
+        ])
+            ->find($id);
+    }
+
     public function getAll(): Collection
     {
-        return $this->model->orderBy('id', 'desc')->get();
+        return $this->model->with([
+            'team' => function ($query) {
+                $query->select(['id', 'team_name']);
+            }
+        ])
+            ->orderBy('id', 'desc')->get();
     }
 
     /**
@@ -42,7 +55,24 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             throw new UserNotFoundException();
         }
 
-        $user->update($data);
+        if (!empty($data['name'])) {
+            $user->name = $data['name'];
+        }
+
+        if (!empty($data['email'])) {
+            $user->email = $data['email'];
+        }
+
+        $user->team_id = $data['teamId'];
+
+        if (!empty($data['password'])) {
+            $user->password = $data['password'];
+        }
+
+        if ($user->isDirty()) {
+            $user->save();
+        }
+
     }
 
     /**

@@ -13,7 +13,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,8 +25,8 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:50',
-            'email' => 'required|string|email|unique:users',
-            'password' =>'nullable|string|min:6',
+            'email' => ['required', 'email', Rule::unique('users')->ignore($this->route('userid'))],
+            'password' => 'nullable|string|min:6',
             'passwordConfirmation' => 'nullable|string|min:6|same:password',
             'level' => ['required', Rule::enum(UserLevel::class)],
             'teamId' => 'nullable|numeric|exists:teams,id',
@@ -61,7 +61,7 @@ class UpdateUserRequest extends FormRequest
             ],
 
             'teamId' => [
-                'numeric' => '존재하지 않는 팀입니다.' ,
+                'numeric' => '존재하지 않는 팀입니다.',
                 'exists' => '존재하지 않는 팀입니다.'
             ],
         ];

@@ -6,6 +6,7 @@ use App\DTOs\User\UpdateUserDto;
 use App\DTOs\User\StoreUserDto;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Http\Resources\UserResources;
 use App\Models\User;
 use App\Service\UserService;
 use Illuminate\Http\JsonResponse;
@@ -23,36 +24,29 @@ class UserController extends Controller
     {
     }
 
-    public function testUser():void
-    {
-        $this->userService->storeUser(new StoreUserDto(
-            name: "TEST",
-            email: "test@test.com",
-            password: '123456'
-        ));
-    }
-
     public function my(): JsonResponse
     {
         return response()->json([
             'message' => 'success',
-            'data' => $this->userService->getUserById(auth()->user()->id)
+            'data' => $this->userService->findUserById(auth()->user()->id)
         ]);
     }
 
     public function index(): JsonResponse
     {
+        $users = $this->userService->getAllUsers();
         return response()->json([
             'message' => 'success',
-            'data' => $this->userService->getAllUsers()->toArray()
+            'data' => UserResources::collection($users)
         ]);
     }
 
     public function show(int $userId): JsonResponse
     {
+        $user = $this->userService->findUserById($userId);
         return response()->json([
             'message' => 'success',
-            'data' => $this->userService->getUserById($userId)
+            'data' => new UserResources($user)
         ]);
     }
 
@@ -71,10 +65,10 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(UpdateUserRequest $request): JsonResponse
+    public function update(UpdateUserRequest $request, $userId): JsonResponse
     {
         $password = $request->post('password') && $request->post('passwordConfirmation') ?
-            $request->post('password') : null;
+            Hash::make($request->post('password')) : null;
 
         $userDto = new UpdateUserDto(
             name: $request->post('name'),
@@ -84,16 +78,16 @@ class UserController extends Controller
             teamId: $request->post('teamId'),
         );
 
-        $this->userService->updateUser($request->post('id'), $userDto);
+        $this->userService->updateUser($userId, $userDto);
 
         return response()->json([
             'message' => 'success',
         ]);
     }
 
-    public function delete(Request $request): JsonResponse
+    public function delete(int $userId): JsonResponse
     {
-        $this->userService->deleteUser($request->post('id'));
+        $this->userService->deleteUser($userId);
 
         return response()->json([
             'message' => 'success',

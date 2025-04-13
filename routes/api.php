@@ -1,14 +1,13 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/auth/status', function () {
     return response()->json(['authenticated' => true], 200);
 });
-
-Route::get('/test/user', [UserController::class, 'testUser']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])
@@ -22,5 +21,13 @@ Route::prefix('/users')->group(function () {
     Route::post('/', [UserController::class, 'store']);
     Route::get('/{userid}', [UserController::class, 'show']);
     Route::put('/{userid}', [UserController::class, 'update']);
-    Route::delete('/{userid}', [UserController::class, 'destroy']);
+    Route::delete('/{userid}', [UserController::class, 'delete']);
 })->middleware('auth:sanctum');
+
+
+Route::prefix('/teams')->group(function () {
+    Route::get('/', [TeamController::class, 'index']);
+    Route::post('/', [TeamController::class, 'store']);
+    Route::get('/{teamid}', [TeamController::class, 'show']);
+    Route::put('/{teamid}', [TeamController::class, 'update']);
+});

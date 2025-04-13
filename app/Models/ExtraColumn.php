@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 class ExtraColumn extends BaseModel
 {
     protected $fillable = [

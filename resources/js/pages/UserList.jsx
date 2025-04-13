@@ -32,6 +32,7 @@ const UserList = () => {
 
     const handleDelete = async (userId) => {
         try {
+            if (!window.confirm('정말 삭제하시겠습니까?')) return;
             const token = localStorage.getItem('token');
             await axios.delete(`/api/users/${userId}`, {
                 headers: {
@@ -39,6 +40,7 @@ const UserList = () => {
                 }
             });
             setUsers(users.filter(user => user.id !== userId));
+            alert('회원 삭제가 완료되었습니다.');
         } catch (error) {
             console.error('Delete Error:', error);
             setError('회원 삭제에 실패했습니다.');
@@ -47,6 +49,7 @@ const UserList = () => {
 
     const columns = [
         { key: 'name', label: '이름' },
+        { key: 'teamName', label: '팀명' },
         { key: 'email', label: '이메일' }
     ];
 

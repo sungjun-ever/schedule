@@ -2,32 +2,32 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const UserDetail = () => {
-    const [user, setUser] = useState(null);
+const TeamDetail = () => {
+    const [team, setTeam] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchUser = async () => {
+        const fetchTeam = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get(`/api/users/${id}`, {
+                const response = await axios.get(`/api/teams/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                setUser(response.data.data);
+                setTeam(response.data.data);
                 setLoading(false);
             } catch (error) {
                 console.error('API Error:', error);
-                setError('사용자 정보를 불러오는데 실패했습니다.');
+                setError('팀 정보를 불러오는데 실패했습니다.');
                 setLoading(false);
             }
         };
 
-        fetchUser();
+        fetchTeam();
     }, [id]);
 
     if (loading) {
@@ -46,10 +46,10 @@ const UserDetail = () => {
         );
     }
 
-    if (!user) {
+    if (!team) {
         return (
             <div className="text-center py-4">
-                사용자를 찾을 수 없습니다.
+                팀을 찾을 수 없습니다.
             </div>
         );
     }
@@ -58,28 +58,30 @@ const UserDetail = () => {
         <div className="container mx-auto px-4 py-8">
             <div className="max-w-2xl mx-auto">
                 <div className="bg-white shadow-md rounded-lg p-6">
-                    <h1 className="text-2xl font-bold text-gray-800 mb-6">사용자 정보</h1>
+                    <h1 className="text-2xl font-bold text-gray-800 mb-6">팀 정보</h1>
                     <div className="space-y-4">
                         <div>
-                            <h2 className="text-sm font-medium text-gray-500">이름</h2>
-                            <p className="mt-1 text-lg text-gray-900">{user.name}</p>
+                            <h2 className="text-sm font-medium text-gray-500">팀 이름</h2>
+                            <p className="mt-1 text-lg text-gray-900">{team.teamName}</p>
                         </div>
                         <div>
-                            <h2 className="text-sm font-medium text-gray-500">이메일</h2>
-                            <p className="mt-1 text-lg text-gray-900">{user.email}</p>
+                            <h2 className="text-sm font-medium text-gray-500">설명</h2>
+                            <p className="mt-1 text-lg text-gray-900">{team.description || '설명이 없습니다.'}</p>
                         </div>
                         <div>
-                            <h2 className="text-sm font-medium text-gray-500">권한</h2>
-                            <p className="mt-1 text-lg text-gray-900">{user.level}</p>
-                        </div>
-                        <div>
-                            <h2 className="text-sm font-medium text-gray-500">팀</h2>
-                            <p className="mt-1 text-lg text-gray-900">{user.teamName ? user.teamName : '없음'}</p>
+                            <h2 className="text-sm font-medium text-gray-500">멤버 수</h2>
+                            <p className="mt-1 text-lg text-gray-900">{team.usersCount || 0}명</p>
                         </div>
                     </div>
-                    <div className="mt-6">
+                    <div className="mt-6 flex space-x-4">
                         <button
-                            onClick={() => navigate('/users')}
+                            onClick={() => navigate(`/teams/${id}/edit`)}
+                            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+                        >
+                            수정
+                        </button>
+                        <button
+                            onClick={() => navigate('/teams')}
                             className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md"
                         >
                             목록으로
@@ -91,4 +93,4 @@ const UserDetail = () => {
     );
 };
 
-export default UserDetail; 
+export default TeamDetail; 

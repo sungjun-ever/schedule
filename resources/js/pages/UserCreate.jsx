@@ -109,7 +109,7 @@ const UserCreate = () => {
             onChange: handleChange,
             options: teams.map(team => ({
                 value: team.id,
-                label: team.name
+                label: team.teamName
             }))
         }
     ];

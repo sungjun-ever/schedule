@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Repository\User\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -22,7 +23,7 @@ class UserService
      * @param int $id
      * @return User
      */
-    public function getUserById(int $id): User
+    public function findUserById(int $id): User
     {
         $user = $this->userRepository->find($id);
 
@@ -63,9 +64,10 @@ class UserService
         $data = [];
 
         foreach ($userDto as $field => $value) {
-            if (!empty($value)) {
-                $data[$field] = $value;
+            if ($field === 'password' && empty($value)) {
+                continue;
             }
+            $data[$field] = $value;
         }
 
         $this->userRepository->update($id, $data);

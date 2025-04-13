@@ -16,6 +16,6 @@ class UserNotFoundException extends Exception
         return response()->json([
             'status' => 'error',
             'message' => '사용자를 찾을 수 없습니다.'
-        ]);
+        ], 404);
     }
 }

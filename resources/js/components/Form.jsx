@@ -49,7 +49,19 @@ const Form = ({
                                 )}
                             </div>
                             {errors[field.name] && (
-                                <p className="mt-1 text-sm text-red-600">{errors[field.name]}</p>
+                                <div className="mt-1">
+                                    {Array.isArray(errors[field.name]) ? (
+                                        errors[field.name].map((error, index) => (
+                                            <p key={index} className="text-sm text-red-600">
+                                                {error}
+                                            </p>
+                                        ))
+                                    ) : (
+                                        <p className="text-sm text-red-600">
+                                            {errors[field.name]}
+                                        </p>
+                                    )}
+                                </div>
                             )}
                         </div>
                     ))}

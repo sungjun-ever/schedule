@@ -42,7 +42,7 @@ const UserEdit = () => {
                     password: '',
                     passwordConfirmation: '',
                     level: userData.level || '',
-                    teamId: userData.team_id || ''
+                    teamId: userData.teamId || ''
                 });
                 setTeams(teamsResponse.data.data || []);
                 setLoading(false);
@@ -133,7 +133,7 @@ const UserEdit = () => {
             onChange: handleChange,
             options: teams.map(team => ({
                 value: team.id,
-                label: team.name
+                label: team.teamName
             }))
         }
     ];
