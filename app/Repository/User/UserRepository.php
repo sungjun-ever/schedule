@@ -2,10 +2,10 @@
 
 namespace App\Repository\User;
 
-use App\Exceptions\UserNotFoundException;
 use App\Models\User;
 use App\Repository\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
@@ -52,7 +52,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $user = $this->model->find($id);
 
         if (!$user) {
-            throw new UserNotFoundException();
+            throw new NotFoundHttpException();
         }
 
         if (!empty($data['name'])) {

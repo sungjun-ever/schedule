@@ -13,6 +13,7 @@ import TeamDetail from '../pages/TeamDetail';
 import UserCreate from '../pages/UserCreate';
 import UserDetail from '../pages/UserDetail';
 import UserEdit from '../pages/UserEdit';
+import SchedulePage from '../pages/SchedulePage';
 import axios from 'axios';
 
 const AppContent = () => {
@@ -75,7 +76,7 @@ const AppContent = () => {
                     element={
                         isAuthenticated ? 
                         <MainLayout>
-                            <div>메인 페이지</div>
+                            <SchedulePage />
                         </MainLayout> : 
                         <Navigate to="/login" />
                     } 
@@ -156,6 +157,16 @@ const AppContent = () => {
                         isAuthenticated ? 
                         <MainLayout>
                             <TeamEdit />
+                        </MainLayout> : 
+                        <Navigate to="/login" />
+                    } 
+                />
+                <Route 
+                    path="/schedules" 
+                    element={
+                        isAuthenticated ? 
+                        <MainLayout>
+                            <SchedulePage />
                         </MainLayout> : 
                         <Navigate to="/login" />
                     } 

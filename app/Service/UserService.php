@@ -4,12 +4,10 @@ namespace App\Service;
 
 use App\DTOs\User\UpdateUserDto;
 use App\DTOs\User\StoreUserDto;
-use App\Exceptions\UserNotFoundException;
 use App\Models\User;
 use App\Repository\User\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Hash;
 
 class UserService
 {

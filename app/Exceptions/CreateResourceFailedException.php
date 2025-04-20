@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class CreateTeamException extends Exception
+class CreateResourceFailedException extends Exception
 {
     public function render($request)
     {

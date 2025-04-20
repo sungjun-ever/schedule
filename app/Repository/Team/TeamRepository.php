@@ -19,4 +19,10 @@ class TeamRepository extends BaseRepository implements TeamRepositoryInterface
         return $this->model->withCount('users')
             ->orderBy('id', 'desc')->get();
     }
+
+    public function findWithMembersById(int $id): Team
+    {
+        return $this->model->with('users')
+            ->where('id', $id)->first();
+    }
 }

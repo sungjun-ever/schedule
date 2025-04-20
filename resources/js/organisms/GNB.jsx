@@ -21,7 +21,7 @@ const GNB = () => {
         <div className="flex items-center space-x-8">
             {/* 로고 */}
             <Link to="/" className="text-xl font-bold text-gray-800 hover:text-gray-600">
-                일정관리 시스템
+                일정관리
             </Link>
             
             {/* 메인 메뉴 */}

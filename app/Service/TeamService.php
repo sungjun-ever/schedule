@@ -4,11 +4,11 @@ namespace App\Service;
 
 use App\DTOs\Team\StoreTeamDto;
 use App\DTOs\Team\UpdateTeamDto;
-use App\Exceptions\CreateTeamException;
-use App\Exceptions\TeamNotFoundException;
+use App\Exceptions\CreateResourceFailedException;
 use App\Models\Team;
 use App\Repository\Team\TeamRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TeamService
 {
@@ -32,16 +32,16 @@ class TeamService
         ]);
 
         if (!$result) {
-            throw new CreateTeamException();
+            throw new CreateResourceFailedException();
         }
     }
 
     public function findTeamById(int $id): Team
     {
-        $team = $this->teamRepository->find($id);
+        $team = $this->teamRepository->findWithMembersById($id);
 
         if (!$team) {
-            throw new TeamNotFoundException();
+            throw new NotFoundHttpException();
         }
 
         return $team;

@@ -56,7 +56,7 @@ const TeamDetail = () => {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <div className="max-w-2xl mx-auto">
+            <div className="max-w-4xl mx-auto">
                 <div className="bg-white shadow-md rounded-lg p-6">
                     <h1 className="text-2xl font-bold text-gray-800 mb-6">팀 정보</h1>
                     <div className="space-y-4">
@@ -69,8 +69,30 @@ const TeamDetail = () => {
                             <p className="mt-1 text-lg text-gray-900">{team.description || '설명이 없습니다.'}</p>
                         </div>
                         <div>
-                            <h2 className="text-sm font-medium text-gray-500">멤버 수</h2>
-                            <p className="mt-1 text-lg text-gray-900">{team.usersCount || 0}명</p>
+                            <h2 className="text-sm font-medium text-gray-500">총 인원수</h2>
+                            <p className="mt-1 text-lg text-gray-900">{team.users?.length || 0}명</p>
+                        </div>
+                        <div className="border-t border-gray-200 my-6"></div>
+                        <div className="mt-6">
+                            <h2 className="text-lg font-medium text-gray-700 mb-4">팀 멤버</h2>
+                            <div className="overflow-x-auto">
+                                <table className="min-w-full divide-y divide-gray-200">
+                                    <thead className="bg-gray-50">
+                                        <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">이름</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">아이디</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white divide-y divide-gray-200">
+                                        {team.users?.map((user, index) => (
+                                            <tr key={index}>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.name}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.email}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <div className="mt-6 flex space-x-4">

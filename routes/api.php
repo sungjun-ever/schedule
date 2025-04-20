@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -30,4 +31,12 @@ Route::prefix('/teams')->group(function () {
     Route::post('/', [TeamController::class, 'store']);
     Route::get('/{teamid}', [TeamController::class, 'show']);
     Route::put('/{teamid}', [TeamController::class, 'update']);
-});
+})->middleware('auth:sanctum');
+
+Route::prefix('/schedules')->group(function () {
+   Route::post('/', [ScheduleController::class, 'store']);
+
+   Route::prefix('/status')->group(function () {
+      Route::post('/', [ScheduleController::class, 'storeStatus']);
+   });
+})->middleware('auth:sanctum');
