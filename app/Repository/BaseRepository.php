@@ -24,13 +24,13 @@ abstract class BaseRepository implements RepositoryInterface
         return $this->model->create($data);
     }
 
-    public function update(int $id, array $data)
+    public function update(int $id, array $data): int
     {
-        $this->model->find($id)->update($data);
+        return $this->model->find($id)->update($data);
     }
 
-    public function delete(int $id)
+    public function delete(int $id): mixed
     {
-        $this->model->find($id)->delete();
+        return $this->model->find($id)->delete();
     }
 }

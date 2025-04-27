@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\DTOs\User\UpdateUserDto;
 use App\DTOs\User\StoreUserDto;
+use App\Exceptions\UpdateResourceFailedException;
 use App\Models\User;
 use App\Repository\User\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
@@ -55,7 +56,6 @@ class UserService
      * @param int $id
      * @param UpdateUserDto $userDto
      * @return void
-     * @throws UserNotFoundException
      */
     public function updateUser(int $id, UpdateUserDto $userDto): void
     {
@@ -68,7 +68,11 @@ class UserService
             $data[$field] = $value;
         }
 
-        $this->userRepository->update($id, $data);
+        $update = $this->userRepository->update($id, $data);
+
+        if (!$update) {
+            throw new UpdateResourceFailedException("사용자 id: {$id}, 수정 실패");
+        }
     }
 
     /**

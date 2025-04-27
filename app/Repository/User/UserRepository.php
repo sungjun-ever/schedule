@@ -47,7 +47,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return $this->model->create($data);
     }
 
-    public function update(int $id, array $data): void
+    public function update(int $id, array $data): int
     {
         $user = $this->model->find($id);
 
@@ -73,6 +73,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             $user->save();
         }
 
+        return $user->id;
     }
 
     /**

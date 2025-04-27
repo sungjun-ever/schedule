@@ -8,7 +8,7 @@ use App\Exceptions\CreateResourceFailedException;
 use App\Models\Team;
 use App\Repository\Team\TeamRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TeamService
 {
@@ -32,7 +32,7 @@ class TeamService
         ]);
 
         if (!$result) {
-            throw new CreateResourceFailedException();
+            throw new CreateResourceFailedException('팀 생성 실패');
         }
     }
 
@@ -41,7 +41,7 @@ class TeamService
         $team = $this->teamRepository->findWithMembersById($id);
 
         if (!$team) {
-            throw new NotFoundHttpException();
+            throw new ModelNotFoundException();
         }
 
         return $team;
@@ -53,5 +53,10 @@ class TeamService
             'team_name' => $dto->teamName,
             'description' => $dto->description,
         ]);
+    }
+
+    public function deleteTeam(int $id): void
+    {
+        $this->teamRepository->delete($id);
     }
 }

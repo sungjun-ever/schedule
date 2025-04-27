@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository\Schedule;
+namespace App\Repository\ScheduleStatus;
 
 interface ScheduleScheduleStatusRepositoryInterface
 {

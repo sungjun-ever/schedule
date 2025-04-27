@@ -62,4 +62,13 @@ class TeamController extends Controller
             'status' => 'success',
         ]);
     }
+
+    public function delete(int $teamId): JsonResponse
+    {
+        $this->teamService->deleteTeam($teamId);
+
+        return response()->json([
+            'status' => 'success',
+        ]);
+    }
 }

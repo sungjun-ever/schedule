@@ -4,7 +4,7 @@ namespace App\Http\Requests\Schedule;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreScheduleRequest extends FormRequest
+class UpdateScheduleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +28,6 @@ class StoreScheduleRequest extends FormRequest
             'endDate' => 'nullable|date',
             'color' => 'nullable|regex:/^#([A-Fa-f0-9]{6})$',
             'parentId' => 'nullable|integer',
-            'authorId' => 'required|integer',
             'pmId' => 'nullable|integer',
             'statusId' => 'required|integer',
             'participants' => 'nullable|array',
@@ -39,7 +38,7 @@ class StoreScheduleRequest extends FormRequest
     {
         return [
             'title' => [
-              'required' => '일정 제목은 필수값입니다.',
+                'required' => '일정 제목은 필수값입니다.',
             ],
 
             'startDate' => [

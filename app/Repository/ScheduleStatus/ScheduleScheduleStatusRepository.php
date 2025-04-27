@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository\Schedule;
+namespace App\Repository\ScheduleStatus;
 
 use App\Models\ScheduleStatus;
 use App\Repository\BaseRepository;

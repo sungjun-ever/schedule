@@ -4,7 +4,7 @@ namespace App\DTOs\Schedule;
 
 use App\DTOs\DtoInterface;
 
-readonly class StoreScheduleDto implements DtoInterface
+class UpdateScheduleDto implements DtoInterface
 {
 
     public function __construct(
@@ -13,7 +13,6 @@ readonly class StoreScheduleDto implements DtoInterface
         public ?string $startDate,
         public ?string $endDate,
         public ?int $parentId,
-        public ?int $authorId,
         public ?string $color,
         public ?int $pmId,
         public ?int $statusId,
@@ -24,13 +23,12 @@ readonly class StoreScheduleDto implements DtoInterface
 
     public static function from(array $data): self
     {
-        return new self(
+        return new static(
             title: $data['title'],
             description: $data['description'],
             startDate: $data['startDate'],
             endDate: $data['endDate'],
             parentId: $data['parentId'],
-            authorId: $data['authorId'],
             color: $data['color'] ?? '#3498db',
             pmId: $data['pmId'],
             statusId: $data['statusId'],
